@@ -2,17 +2,17 @@ package bot.task.bali.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString(callSuper = true)
 @Entity
-@Table(name = "telegram_user")
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TelegramUser extends AppUser {
-    
+
     @EqualsAndHashCode.Include
     private Long chatId;
-    private String telegramUserName;
 }

@@ -2,11 +2,13 @@ package bot.task.bali.repo.telegram;
 
 import bot.task.bali.entities.TelegramUser;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @AllArgsConstructor
+@Log4j2
 public class TelegramUsersManage implements GetterTelegramUser {
 
     private TelegramUserRepository telegramUserRepository;
@@ -19,8 +21,12 @@ public class TelegramUsersManage implements GetterTelegramUser {
             if (opt.isPresent()) {
                 return opt.get();
             }
-            throw new RuntimeException("User not found");
+            var user = TelegramUser.builder()
+                    .chatId(update.getMessage().getChatId())
+                    .build();
+            return telegramUserRepository.save(user);
         } catch (Exception e) {
+            log.error(e);
             throw new RuntimeException("User not found", e);
         }
     }

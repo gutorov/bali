@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 class Converter implements ConverterTelegramUser {
     @Override
     public UserPromtDTO convertToUserPromt(TelegramUser telegramUser) {
-        return null;
+        return UserPromtDTO.builder()
+                .appUserId(telegramUser.getId())
+                .build();
     }
 }

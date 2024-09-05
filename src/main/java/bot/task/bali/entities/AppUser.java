@@ -1,13 +1,11 @@
 package bot.task.bali.entities;
 
-import com.google.gson.Gson;
 import dev.langchain4j.data.message.ChatMessage;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +15,11 @@ import static dev.langchain4j.data.message.ChatMessageSerializer.messagesToJson;
 @Getter
 @Setter
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "app_user")
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppUser {
 
     @Id
@@ -28,6 +30,7 @@ public class AppUser {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private Status status = Status.COLD;
 
     @Column(columnDefinition = "TEXT")

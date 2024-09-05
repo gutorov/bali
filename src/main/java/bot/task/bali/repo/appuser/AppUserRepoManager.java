@@ -1,6 +1,7 @@
 package bot.task.bali.repo.appuser;
 
 import bot.task.bali.entities.AppUser;
+import bot.task.bali.entities.Status;
 import bot.task.bali.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,8 +16,18 @@ public class AppUserRepoManager implements GetterUserById, AppUserSaver {
 
     @Override
     public AppUser getUserById(UUID uuid) {
-        return appUserRepository.findById(uuid)
-                .orElseThrow(() -> new UserNotFoundException(uuid));
+
+        try {
+            var opt = appUserRepository.findById(uuid);
+            if (opt.isPresent()) {
+                return opt.get();
+            }else {
+                var user = AppUser.builder().build();
+                return appUserRepository.save(user);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save user: " + uuid, e);
+        }
     }
 
     @Override

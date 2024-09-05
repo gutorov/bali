@@ -23,13 +23,13 @@ import java.util.List;
 @Log4j2
 class TelegramBotManager extends TelegramWebhookBot implements GetterFilePath {
 
-    @Value("${bot.name}")
+    @Value("${telegram.bot.name}")
     private String botName;
 
-    @Value("${bot.token}")
+    @Value("${telegram.bot.token}")
     private String botToken;
 
-    @Value("${bot.uri}")
+    @Value("${telegram.bot.uri}")
     private String botUri;
 
     @PostConstruct
