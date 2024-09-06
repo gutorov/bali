@@ -78,8 +78,6 @@ class TelegramBotManager extends TelegramWebhookBot implements GetterFilePath {
     public void sendAnswerMessage(SendMessage message) {
         if (message != null) {
             try {
-                message.setParseMode("HTML");
-                message.setDisableWebPagePreview(true);
                 execute(message);
             } catch (TelegramApiException e) {
                 log.error(e);
