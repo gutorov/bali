@@ -53,19 +53,20 @@ public class LangChainConfig {
         return OpenAiChatModel.builder()
                 .apiKey(apiKey)
                 .modelName(OpenAiChatModelName.GPT_4_O)
+                .strictTools(true)
                 .timeout(ofSeconds(60))
                 .build();
     }
 
     @Bean
-    Assistant createAssistant(ChatLanguageModel chatLanguageModel, ChatMemoryStore store) {
+    Assistant createAssistant(ChatLanguageModel chatLanguageModel, ChatMemoryStore store, TrigerToolHandler trigerToolHandler) {
 
         EmbeddingModel embeddingModel = new BgeSmallEnV15QuantizedEmbeddingModel();
 
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
-                .documentSplitter(DocumentSplitters.recursive(300, 10))
+                .documentSplitter(DocumentSplitters.recursive(1000, 100))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .build();
@@ -73,7 +74,8 @@ public class LangChainConfig {
         List<Document> documentList = new ArrayList<>();
         try {
             Files.list(Paths.get("src/main/resources/static"))
-                    .filter(Files::isRegularFile)  // Фильтрация только файлов
+                    .filter(Files::isRegularFile)
+                    .filter(filePath -> filePath.toString().endsWith(".txt"))
                     .forEach(filePath -> {
                         Document document = loadDocument(filePath, new TextDocumentParser());
                         log.debug("loading file: {}", filePath);
@@ -116,10 +118,10 @@ public class LangChainConfig {
                 .build();
 
         return AiServices.builder(Assistant.class)
-            .chatLanguageModel(chatLanguageModel)
-            .chatMemoryProvider(chatMemoryProvider)
-            .retrievalAugmentor(retrievalAugmentor)
-            .tools(new TrigerToolHandler())
-            .build();
+                .chatLanguageModel(chatLanguageModel)
+                .chatMemoryProvider(chatMemoryProvider)
+                .retrievalAugmentor(retrievalAugmentor)
+                .tools(trigerToolHandler)
+                .build();
     }
 }

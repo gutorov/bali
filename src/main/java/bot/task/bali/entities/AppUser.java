@@ -36,6 +36,8 @@ public class AppUser {
     @Column(columnDefinition = "TEXT")
     private String chatMessages;
 
+    private Long amoCrmLeadId;
+
     public List<ChatMessage> getChatMessages() {
         return messagesFromJson(chatMessages);
     }

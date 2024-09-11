@@ -26,7 +26,19 @@ public class AppUserRepoManager implements GetterUserById, AppUserSaver {
                 return appUserRepository.save(user);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to save user: " + uuid, e);
+            throw new RuntimeException("Failed to find: " + uuid, e);
+        }
+    }
+
+    @Override
+    public AppUser getByAmoLeadId(Long id) {
+        try {
+            var opt = appUserRepository.findByAmoCrmLeadId(id);
+            if (opt.isPresent()) {
+                return opt.get();
+            } throw new RuntimeException();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to find user with AmoLeadId: " + id);
         }
     }
 

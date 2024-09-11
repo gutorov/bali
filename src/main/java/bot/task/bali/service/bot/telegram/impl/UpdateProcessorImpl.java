@@ -24,6 +24,7 @@ class UpdateProcessorImpl implements UpdateProcessor {
         try {
             distributeMessagesByType(update);
         } catch (Exception e) {
+            log.error(e);
             if (update.hasMessage()) {
                 telegramResponseExecutor.execute(
                         Long.valueOf(update.getMessage().getChatId().toString()),
