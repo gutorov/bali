@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class UserPromtDTO {
+public class UserDTO {
     private UUID appUserId;
+    private Long amoLeadId;
 }

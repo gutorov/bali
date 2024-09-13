@@ -1,13 +1,15 @@
 package bot.task.bali.service.amo.impl;
 
-import bot.task.bali.entities.AppUser;
+import bot.task.bali.entities.amo.AmoColumnQualification;
 import bot.task.bali.entities.utils.AmoCustomField;
 import bot.task.bali.service.amo.AmoApiChangerCustomFields;
 import bot.task.bali.service.amo.AmoApiCreatorAmoUser;
+import bot.task.bali.service.amo.AmoApiColumnMover;
 import bot.task.bali.service.app.converter.ConverterToCustomField;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -20,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Component
 @Log4j2
-public class AmoApiLeadsManager implements AmoApiChangerCustomFields, AmoApiCreatorAmoUser {
+public class AmoApiLeadsManager implements AmoApiChangerCustomFields, AmoApiCreatorAmoUser, AmoApiColumnMover {
 
     private final WebClient webClient;
     private final Gson gson;
@@ -35,7 +37,7 @@ public class AmoApiLeadsManager implements AmoApiChangerCustomFields, AmoApiCrea
 
     @Async
     @Override
-    public CompletableFuture<Boolean> setCustomValue(Long leadId, AmoCustomField amoCustomField) {
+    public CompletableFuture<Boolean> setCustomValue(@NonNull Long leadId, AmoCustomField amoCustomField) {
         try {
             List<Val> vals = amoCustomField.getValues().stream()
                     .map(e -> new Val(e.getId(), e.getValue()))
@@ -68,7 +70,7 @@ public class AmoApiLeadsManager implements AmoApiChangerCustomFields, AmoApiCrea
     }
 
     @Override
-    public Long createNewLead(String name) {
+    public Long createNewLead(@NonNull String name) {
         var request = List.of(
                 new NewUser(name)
         );
@@ -91,6 +93,30 @@ public class AmoApiLeadsManager implements AmoApiChangerCustomFields, AmoApiCrea
                 .block();
 
         return result;
+    }
+
+    @Override
+    public boolean moveUser(@NonNull Long amoLeadId, AmoColumnQualification amoColumn) {
+        try{
+            JsonObject jsonRequest = new JsonObject();
+            jsonRequest.addProperty("status_id", amoColumn.getValue());
+
+            Boolean result = webClient.patch()
+                    .uri("/api/v4/leads/" + amoLeadId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(jsonRequest.toString())
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .thenReturn(true)
+                    .doOnError(e -> log.error("Error setting custom value", e))
+                    .onErrorReturn(false)
+                    .block();
+
+            return result;
+        }catch (Exception e) {
+            log.error(e);
+        }
+        return false;
     }
 
     record NewUser(String name) {}

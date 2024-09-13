@@ -1,10 +1,9 @@
 package bot.task.bali.service.amo.impl;
 
-import bot.task.bali.entities.enums.AmoReqiredCustomField;
+import bot.task.bali.entities.amo.AmoReqiredCustomField;
 import bot.task.bali.entities.utils.AmoCustomFieldExistValues;
 import bot.task.bali.service.amo.GetterAvailableVals;
 import bot.task.bali.service.app.converter.ConverterToCustomField;
-import com.google.gson.Gson;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

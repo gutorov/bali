@@ -67,12 +67,10 @@ public class PersistentChatMemoryStore implements ChatMemoryStore, AdderSystemMe
 
         if (index != -1) {
             chatMessages.remove(index);
-        } else if (chatMessages.size() > 10) {
-            chatMessages.remove(1);
         }
 
         ChatMessage systemMessage = SystemMessage.from(message);
-        chatMessages.add(1, systemMessage);
+        chatMessages.add(systemMessage);
         user.setChatMessages(new ArrayList<>(chatMessages));
         userSaver.save(user);
     }

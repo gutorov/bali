@@ -1,7 +1,7 @@
 package bot.task.bali.service.amo;
 
 import bot.task.bali.entities.AppUser;
-import bot.task.bali.entities.enums.AmoReqiredCustomField;
+import bot.task.bali.entities.amo.AmoReqiredCustomField;
 
 public interface GetterRequiredFields {
     /**

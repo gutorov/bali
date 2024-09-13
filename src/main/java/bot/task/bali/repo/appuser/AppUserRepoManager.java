@@ -3,6 +3,7 @@ package bot.task.bali.repo.appuser;
 import bot.task.bali.entities.AppUser;
 import bot.task.bali.entities.Status;
 import bot.task.bali.exception.UserNotFoundException;
+import bot.task.bali.service.amo.AmoApiCreatorAmoUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,21 @@ import java.util.UUID;
 public class AppUserRepoManager implements GetterUserById, AppUserSaver {
 
     private final AppUserRepository appUserRepository;
+    private final AmoApiCreatorAmoUser amoApiCreatorAmoUser;
 
     @Override
     public AppUser getUserById(UUID uuid) {
-
         try {
             var opt = appUserRepository.findById(uuid);
             if (opt.isPresent()) {
-                return opt.get();
+                var user = opt.get();
+                if (user.getAmoCrmLeadId() == null) {
+                    user.setAmoCrmLeadId(amoApiCreatorAmoUser.createNewLead("User : " + user.getId()));
+                    appUserRepository.save(user);
+                    return getUserById(user.getId());
+                }else {
+                    return user;
+                }
             }else {
                 var user = AppUser.builder().build();
                 return appUserRepository.save(user);

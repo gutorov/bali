@@ -1,6 +1,7 @@
 package bot.task.bali.config;
 
 import bot.task.bali.service.ai.assistant.Assistant;
+import bot.task.bali.service.ai.assistant.ServiceAssistant;
 import bot.task.bali.service.ai.assistant.TrigerToolHandler;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -53,6 +54,8 @@ public class LangChainConfig {
         return OpenAiChatModel.builder()
                 .apiKey(apiKey)
                 .modelName(OpenAiChatModelName.GPT_4_O)
+                .logRequests(true)
+                .logResponses(true)
                 .strictTools(true)
                 .timeout(ofSeconds(60))
                 .build();
@@ -122,6 +125,13 @@ public class LangChainConfig {
                 .chatMemoryProvider(chatMemoryProvider)
                 .retrievalAugmentor(retrievalAugmentor)
                 .tools(trigerToolHandler)
+                .build();
+    }
+
+    @Bean
+    public ServiceAssistant createServiceAssistant(ChatLanguageModel chatLanguageModel) {
+        return AiServices.builder(ServiceAssistant.class)
+                .chatLanguageModel(chatLanguageModel)
                 .build();
     }
 }

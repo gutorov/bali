@@ -24,12 +24,14 @@ public class TelegramUsersManage implements GetterTelegramUser {
                 return opt.get();
             }
 
-//            var telegramUserName = update.get
+            var telegramUserName = update.getMessage().getFrom().getUserName();
+            var name = telegramUserName != null ? telegramUserName : update.getMessage().getChatId();
 
             var user = TelegramUser.builder()
                     .chatId(update.getMessage().getChatId())
-                    .amoCrmLeadId(amoApiCreatorAmoUser.createNewLead("Telegram User : " + update.getMessage().getChatId()))
+                    .amoCrmLeadId(amoApiCreatorAmoUser.createNewLead("From Telegram Bot : " + name))
                     .build();
+
             return telegramUserRepository.save(user);
         } catch (Exception e) {
             log.error(e);
