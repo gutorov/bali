@@ -1,15 +1,18 @@
 # Запуск приложения
 Все действия описаны для операционной сисемы MacOS и Docker
 ## Предварительные требования
-### Запустить БД
-- `docker run \
-  -it \
-  -v postgresml_data:/var/lib/postgresql \
-  -p 5433:5432 \
-  -p 8000:8000 \
-  ghcr.io/postgresml/postgresml:2.9.3 \
-  sudo -u postgresml psql -d postgresml`
-- `CREATE EXTENSION IF NOT EXISTS pgml;
-  SELECT pgml.version();`
-- 
+### База знаний
+- создать папку 'files'
+- переместить в нее все нужные файлы в формате '.txt'
+### Сборка приложения
+- `mvn clean install`
+### Переменные окружения
+- Добавить все остающие поля .env (.env.dist пример)
+## Запуск
+- Перенести в корень фалы:
+  - docker-compose.yml
+  - Dockerfile
+  - .env
+  - /files
+- `docker-compose up --build`
 

@@ -13,8 +13,11 @@ public enum AmoColumnQualification {
      * бота
      */
     CONTACT_ESTABLISHED("67129898"),
+
     /** Квалифицированный, все поля заполнены */
-    QUALIFIED("143");
+    QUALIFIED("142"),
+    /** Переход в основную воронку */
+    TRANSFER_TO_MAIN("143");
 
     @Getter private final Long value;
 

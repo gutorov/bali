@@ -10,7 +10,6 @@ import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModelName;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;
-import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +61,10 @@ public class LangChainConfig {
     }
 
     @Bean
-    Assistant createAssistant(ChatLanguageModel chatLanguageModel, ChatMemoryStore store, TrigerToolHandler trigerToolHandler) {
+    Assistant createAssistant(ChatLanguageModel chatLanguageModel,
+                              ChatMemoryStore store,
+                              TrigerToolHandler trigerToolHandler,
+                              @Value("${chat-gpt.files.url}") String filesPath) {
 
         EmbeddingModel embeddingModel = new BgeSmallEnV15QuantizedEmbeddingModel();
 
@@ -76,7 +78,7 @@ public class LangChainConfig {
 
         List<Document> documentList = new ArrayList<>();
         try {
-            Files.list(Paths.get("src/main/resources/static"))
+            Files.list(Paths.get(filesPath))
                     .filter(Files::isRegularFile)
                     .filter(filePath -> filePath.toString().endsWith(".txt"))
                     .forEach(filePath -> {
