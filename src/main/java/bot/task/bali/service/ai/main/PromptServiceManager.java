@@ -5,9 +5,7 @@ import bot.task.bali.entities.AppUser;
 import bot.task.bali.entities.Status;
 import bot.task.bali.entities.amo.AmoColumnQualification;
 import bot.task.bali.entities.amo.AmoReqiredCustomField;
-import bot.task.bali.entities.utils.AmoCustomField;
 import bot.task.bali.entities.utils.AmoCustomFieldExistValues;
-import bot.task.bali.entities.utils.AmoCustomFieldValue;
 import bot.task.bali.entities.utils.AmoCustomFieldValueExistValue;
 import bot.task.bali.repo.appuser.GetterUserById;
 import bot.task.bali.service.ai.assistant.AdderSystemMessageToChat;
@@ -17,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Log4j2

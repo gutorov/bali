@@ -1,6 +1,8 @@
 package bot.task.bali.contoller;
 
+import bot.task.bali.dto.WazzupBody;
 import bot.task.bali.service.bot.telegram.api.UpdateProcessor;
+import bot.task.bali.service.bot.wazzap.WazzupUpdateProcessor;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class WebHookController {
 
     private final UpdateProcessor updateProcessor;
+    private final WazzupUpdateProcessor wazzupUpdateProcessor;
 
     @RequestMapping(value = "/callback/update", method = RequestMethod.POST) // main
     public ResponseEntity<?> onUpdateReceived(@RequestBody Update update) {
@@ -23,6 +26,12 @@ public class WebHookController {
             updateProcessor.processUpdate(update);
             return ResponseEntity.ok().build();
         }
+        return new ResponseEntity<>("cannot handle non private messages", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/callback/wazzap", method = RequestMethod.POST) // main
+    public ResponseEntity<?> onUpdateReceivedFromWazzap(@RequestBody WazzupBody body) {
+        wazzupUpdateProcessor.update(body);
         return new ResponseEntity<>("cannot handle non private messages", HttpStatus.BAD_REQUEST);
     }
 

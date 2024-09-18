@@ -29,7 +29,7 @@ class TelegramBotManager extends TelegramWebhookBot implements GetterFilePath {
     @Value("${telegram.bot.token}")
     private String botToken;
 
-    @Value("${telegram.bot.uri}")
+    @Value("${shared.webhook.bot.uri}")
     private String botUri;
 
     @PostConstruct

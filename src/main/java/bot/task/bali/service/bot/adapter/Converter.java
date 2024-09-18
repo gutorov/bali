@@ -1,16 +1,19 @@
 package bot.task.bali.service.bot.adapter;
 
 import bot.task.bali.dto.UserDTO;
+import bot.task.bali.entities.AppUser;
 import bot.task.bali.entities.TelegramUser;
+import bot.task.bali.entities.WhatsAppUser;
 import org.springframework.stereotype.Component;
 
 @Component
-class Converter implements ConverterTelegramUser {
+class Converter implements ConvertAppUser {
+
     @Override
-    public UserDTO convertToUserPromt(TelegramUser telegramUser) {
+    public UserDTO convertToUserPrompt(AppUser appUser) {
         return UserDTO.builder()
-                .appUserId(telegramUser.getId())
-                .amoLeadId(telegramUser.getAmoCrmLeadId())
+                .appUserId(appUser.getId())
+                .amoLeadId(appUser.getAmoCrmLeadId())
                 .build();
     }
 }
