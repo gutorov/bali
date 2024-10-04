@@ -5,6 +5,7 @@ import bot.task.bali.entities.utils.AmoCustomFieldExistValues;
 import bot.task.bali.service.amo.GetterAvailableVals;
 import bot.task.bali.service.app.converter.ConverterToCustomField;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,7 +16,11 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-//todo сделать шедулер, который обновляет значения
+//todo
+// - сделать шедулер, который обновляет значения
+// - посмотреть как обрабатывать правильно поля
+
+@Log4j2
 @Component
 class AmoCustomFieldExistValuesManager implements GetterAvailableVals {
 
@@ -69,7 +74,8 @@ class AmoCustomFieldExistValuesManager implements GetterAvailableVals {
                 .map(converter::convertExistValues)
                 .onErrorResume(error -> {
                     // В случае ошибки возвращаем сообщение с ошибкой
-                    throw new RuntimeException("Failed to fetch url: " + url, error);
+                    log.debug("Failed to fetch url: " + url, error.getMessage());
+                    return Mono.empty();
                 });
     }
 }

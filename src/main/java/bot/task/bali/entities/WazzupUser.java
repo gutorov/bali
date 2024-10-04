@@ -1,9 +1,8 @@
 package bot.task.bali.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 
 @Getter
 @Setter
@@ -11,8 +10,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TelegramUser extends AppUser {
-
+public class WazzupUser extends AppUser {
     @EqualsAndHashCode.Include
-    private Long chatId;
+    private String chatId;
+    private String getChatId;
+    private String chatType;
 }

@@ -1,9 +1,8 @@
 package bot.task.bali.repo.whatsapp;
 
 import bot.task.bali.dto.WazzupBody;
-import bot.task.bali.entities.WhatsAppUser;
+import bot.task.bali.entities.WazzupUser;
 
 public interface GetterWhatsAppUser {
-
-    WhatsAppUser getByBody(WazzupBody body);
+    WazzupUser getByBody(WazzupBody body);
 }

@@ -1,8 +1,6 @@
 package bot.task.bali.repo.appuser;
 
 import bot.task.bali.entities.AppUser;
-import bot.task.bali.entities.Status;
-import bot.task.bali.exception.UserNotFoundException;
 import bot.task.bali.service.amo.AmoApiCreatorAmoUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

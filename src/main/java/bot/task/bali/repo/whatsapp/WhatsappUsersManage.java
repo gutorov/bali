@@ -1,26 +1,24 @@
 package bot.task.bali.repo.whatsapp;
 
 import bot.task.bali.dto.WazzupBody;
-import bot.task.bali.entities.TelegramUser;
-import bot.task.bali.entities.WhatsAppUser;
+import bot.task.bali.entities.WazzupUser;
 import bot.task.bali.service.amo.AmoApiCreatorAmoUser;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @AllArgsConstructor
 @Log4j2
-public class TelegramUsersManage implements GetterWhatsAppUser {
+public class WhatsappUsersManage implements GetterWhatsAppUser {
 
     private WhatsAppUserRepository whatsAppUserRepository;
     private AmoApiCreatorAmoUser amoApiCreatorAmoUser;
 
     @Override
-    public WhatsAppUser getByBody(WazzupBody body) {
+    public WazzupUser getByBody(WazzupBody body) {
         try {
             var chatId = body.getChatId();
             var opt = whatsAppUserRepository.findByChatId(chatId);
@@ -28,7 +26,7 @@ public class TelegramUsersManage implements GetterWhatsAppUser {
                 return opt.get();
             }
 
-            var user = WhatsAppUser.builder()
+            var user = WazzupUser.builder()
                     .chatId(chatId)
                     .amoCrmLeadId(amoApiCreatorAmoUser.createNewLead("From WhatsApp Bot : " + chatId))
                     .build();

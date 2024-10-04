@@ -87,7 +87,7 @@ public class LangChainConfig {
                         documentList.add(document);
                     });
         } catch (IOException e) {
-            log.error("Failed to load static documents", e);
+            log.error("Failed to load document", e);
             System.err.println("Ошибка при чтении директории: " + e.getMessage());
         }
         if (documentList.isEmpty()) {
